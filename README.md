@@ -1,15 +1,22 @@
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KT 통합 견적서 시스템</title>
+    <title>KT 통합 견적서 및 고객 신청 시스템</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @page { size: A4; margin: 0; }
-        * { box-sizing: border-box; }
-        body {
+        * { 
+            box-sizing: border-box; 
             font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, "Malgun Gothic", "맑은 고딕", sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body {
             background-color: #f4f6f9;
             padding: 20px 0;
             margin: 0;
@@ -18,11 +25,7 @@
             align-items: center;
             justify-content: center;
             -webkit-font-smoothing: antialiased;
-            /* 무단 선택 및 드래그 방지 CSS */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            position: relative;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -31,6 +34,34 @@
             th { background-color: #f1f5f9 !important; color: #000000 !important; }
             td { background-color: #ffffff !important; color: #000000 !important; border-color: #a0a0a0 !important; }
             input[type="text"], select, textarea { background-color: #f8fafc !important; color: #000000 !important; }
+        }
+
+        /* KT CS 김영훈 시그니처 워터마크 오버레이 */
+        .watermark-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            font-size: 21px;
+            font-weight: 900;
+            color: rgba(0, 75, 141, 0.08) !important;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 999;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        /* 최상단 신뢰 배지 스타일 */
+        .signature-badge {
+            width: 794px;
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.06);
         }
 
         .tab-menu-container {
@@ -81,10 +112,10 @@
             transition: all 0.2s;
         }
         .tool-btn:hover { background-color: #e2e8f0; }
-        .tool-btn.btn-save { background-color: #0284c7; color: #ffffff; border-color: #0284c7; }
-        .tool-btn.btn-save:hover { background-color: #0369a1; }
-        .tool-btn.btn-load { background-color: #0d9488; color: #ffffff; border-color: #0d9488; }
-        .tool-btn.btn-load:hover { background-color: #0f766e; }
+        .tool-btn.btn-send { background-color: #0284c7; color: #ffffff; border-color: #0284c7; }
+        .tool-btn.btn-send:hover { background-color: #0369a1; }
+        .tool-btn.btn-save { background-color: #0d9488; color: #ffffff; border-color: #0d9488; }
+        .tool-btn.btn-save:hover { background-color: #0f766e; }
         .tool-btn.btn-reset { background-color: #ef4444; color: #ffffff; border-color: #ef4444; }
         .tool-btn.btn-reset:hover { background-color: #dc2626; }
 
@@ -98,23 +129,6 @@
             margin: 0 auto;
             position: relative;
             overflow: hidden;
-        }
-
-        /* 맞춤형 한글 워터마크 CSS */
-        .watermark-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-25deg);
-            font-size: 23px;
-            font-weight: 900;
-            color: rgba(0, 75, 141, 0.08) !important;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 999;
-            letter-spacing: -0.5px;
-            font-family: "Pretendard Variable", Pretendard, "Malgun Gothic", "맑은 고딕", sans-serif;
-            text-align: center;
         }
 
         .invoice-header {
@@ -330,6 +344,15 @@
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
     <div class="responsive-wrapper">
+        
+        <!-- 최상단 공식 시그니처 배지 -->
+        <div class="signature-badge">
+            <div style="font-size:11px; color:#0284c7; font-weight:800; letter-spacing:1px; margin-bottom:2px;">KT CS TELECOM AUTOMATION ARCHITECT</div>
+            <div style="font-size:13px; color:#1e293b; font-weight:700;">
+                🔒 본 시스템은 <span style="color:#0284c7;">KT CS 김영훈</span>의 공식 지적 자산입니다. (무단 복제 및 사용 금지)
+            </div>
+        </div>
+
         <div class="tab-menu-container">
             <button class="tab-btn active" id="btn-renewal" onclick="switchEstimateTab('renewal')">법인회선 재약정 견적서</button>
             <button class="tab-btn" id="btn-total" onclick="switchEstimateTab('total')">유무선 통합 견적서</button>
@@ -346,8 +369,9 @@
                     <button class="tool-btn btn-reset" onclick="resetActiveTabForm()">♻️ 입력 내용 초기화</button>
                 </div>
                 <div class="toolbar-group">
-                    <button class="tool-btn btn-save" onclick="saveCurrentEstimateData()">💾 최근 견적서 저장</button>
-                    <button class="tool-btn btn-load" onclick="loadSavedEstimateData()">📂 저장된 견적서 불러오기</button>
+                    <button class="tool-btn btn-send" onclick="sendQuoteDataGas()">📩 DB 적재 & 알림 전송</button>
+                    <button class="tool-btn btn-save" onclick="saveCurrentEstimateData()">💾 최근 작성 저장</button>
+                    <button class="tool-btn" onclick="loadSavedEstimateData()">📂 불러오기</button>
                 </div>
             </div>
 
@@ -365,13 +389,13 @@
                 </tr>
                 <tr>
                     <th>업체명</th>
-                    <td><input type="text" value=" 귀하" class="client-name" onfocus="clearGuidance(this)" onblur="restoreGuidance(this)" /></td>
+                    <td><input type="text" value=" 귀하" class="client-name" id="renewal-client-name" onfocus="clearGuidance(this)" onblur="restoreGuidance(this)" /></td>
                     <th>회사명</th>
                     <td><input type="text" value="(주) KT CS" readonly /></td>
                 </tr>
                 <tr>
                     <th>사업자번호</th>
-                    <td><input type="text" value="" placeholder="고객 사업자번호 입력" /></td>
+                    <td><input type="text" id="renewal-biz-num" placeholder="고객 사업자번호 입력" /></td>
                     <th>대표자명</th>
                     <td><input type="text" value="이창호" readonly /></td>
                 </tr>
@@ -498,8 +522,9 @@
                     <button class="tool-btn btn-reset" onclick="resetActiveTabForm()">♻️ 입력 내용 초기화</button>
                 </div>
                 <div class="toolbar-group">
-                    <button class="tool-btn btn-save" onclick="saveCurrentEstimateData()">💾 최근 견적서 저장</button>
-                    <button class="tool-btn btn-load" onclick="loadSavedEstimateData()">📂 저장된 견적서 불러오기</button>
+                    <button class="tool-btn btn-send" onclick="sendQuoteDataGas()">📩 DB 적재 & 알림 전송</button>
+                    <button class="tool-btn btn-save" onclick="saveCurrentEstimateData()">💾 최근 작성 저장</button>
+                    <button class="tool-btn" onclick="loadSavedEstimateData()">📂 불러오기</button>
                 </div>
             </div>
 
@@ -517,13 +542,13 @@
                 </tr>
                 <tr>
                     <th>고객명/업체명</th>
-                    <td><input type="text" value=" 귀하" class="client-name" onfocus="clearGuidance(this)" onblur="restoreGuidance(this)" /></td>
+                    <td><input type="text" value=" 귀하" class="client-name" id="total-client-name" onfocus="clearGuidance(this)" onblur="restoreGuidance(this)" /></td>
                     <th>회사명</th>
                     <td><input type="text" value="(주) KT CS" readonly /></td>
                 </tr>
                 <tr>
                     <th>생년월일/사업자</th>
-                    <td><input type="text" value="" placeholder="생년월일 또는 사업자번호" /></td>
+                    <td><input type="text" id="total-biz-num" placeholder="생년월일 또는 사업자번호" /></td>
                     <th>대표자명</th>
                     <td><input type="text" value="이창호" readonly /></td>
                 </tr>
@@ -667,8 +692,9 @@
                     <button class="tool-btn btn-reset" onclick="resetActiveTabForm()">♻️ 수량 초기화(0)</button>
                 </div>
                 <div class="toolbar-group">
-                    <button class="tool-btn btn-save" onclick="saveCurrentEstimateData()">💾 최근 견적서 저장</button>
-                    <button class="tool-btn btn-load" onclick="loadSavedEstimateData()">📂 저장된 견적서 불러오기</button>
+                    <button class="tool-btn btn-send" onclick="sendQuoteDataGas()">📩 DB 적재 & 알림 전송</button>
+                    <button class="tool-btn btn-save" onclick="saveCurrentEstimateData()">💾 최근 작성 저장</button>
+                    <button class="tool-btn" onclick="loadSavedEstimateData()">📂 불러오기</button>
                 </div>
             </div>
 
@@ -767,7 +793,7 @@
                         <td>
                             <div class="qty-box">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, -1)">-</button>
-                                <input type="text" inputmode="numeric" class="qty-input device-qty" value="15">
+                                <input type="text" inputmode="numeric" class="qty-input device-qty" id="hai-table-qty" value="15">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, 1)">+</button>
                             </div>
                         </td>
@@ -786,7 +812,7 @@
                         <td>
                             <div class="qty-box">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, -1)">-</button>
-                                <input type="text" inputmode="numeric" class="qty-input reader-qty" value="0">
+                                <input type="text" inputmode="numeric" class="qty-input reader-qty" id="hai-reader-qty" value="0">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, 1)">+</button>
                             </div>
                         </td>
@@ -829,7 +855,7 @@
                         <td>
                             <div class="qty-box">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, -1)">-</button>
-                                <input type="text" inputmode="numeric" class="qty-input device-qty" value="1">
+                                <input type="text" inputmode="numeric" class="qty-input device-qty" id="hai-k10-qty" value="1">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, 1)">+</button>
                             </div>
                         </td>
@@ -842,7 +868,7 @@
                         <td>
                             <div class="qty-box">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, -1)">-</button>
-                                <input type="text" inputmode="numeric" class="qty-input device-qty" value="1">
+                                <input type="text" inputmode="numeric" class="qty-input device-qty" id="hai-k15-qty" value="1">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, 1)">+</button>
                             </div>
                         </td>
@@ -885,7 +911,7 @@
                         <td>
                             <div class="qty-box">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, -1)">-</button>
-                                <input type="text" inputmode="numeric" class="qty-input device-qty" value="1">
+                                <input type="text" inputmode="numeric" class="qty-input device-qty" id="hai-waiting-qty" value="1">
                                 <button type="button" class="qty-btn no-print-target" onclick="changeQty(this, 1)">+</button>
                             </div>
                         </td>
@@ -985,7 +1011,7 @@
                     </tr>
                     <tr class="subtotal">
                         <td class="item-name" colspan="4">합계</td>
-                        <td class="g-supply4">0</td><td class="g-tax4">0</td><td class="g-total4">0</td>
+                        <td class="g-supply4" id="hai-onetime-supply">0</td><td class="g-tax4">0</td><td class="g-total4" id="hai-onetime-total">0</td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -1021,6 +1047,8 @@
 
     <script>
         let activeTab = 'renewal';
+        // 구글 앱스 스크립트 웹 앱 최신 배포 엔드포인트 URL
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzriskJha8aL9cnErvdImPwMBxLi690oyLCUgrTBHJHcvHiWlNvGwU3ferdftgx-sml/exec";
 
         window.onload = function() {
             setTodayDateAll();
@@ -1035,14 +1063,16 @@
 
         /* 단축키 및 무단 복사 차단 스크립트 */
         function initKeyLock() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('dragstart', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+
             document.addEventListener('keydown', function(e) {
-                // F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S, Ctrl+C 단축키 차단
                 if (e.keyCode === 123 || 
-                   (e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
-                   (e.ctrlKey && e.keyCode === 85) || 
-                   (e.ctrlKey && e.keyCode === 83) || 
-                   (e.ctrlKey && e.keyCode === 67)) {
+                   (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+                   (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 65))) {
                     e.preventDefault();
+                    e.stopPropagation();
                     return false;
                 }
             });
@@ -1098,6 +1128,75 @@
 
         function checkDateValue(el) {
             if (el.value) { el.classList.add('has-value'); } else { el.classList.remove('has-value'); }
+        }
+
+        /* ----- 백엔드(Google Sheets/Solapi) 연동 스크립트 ----- */
+        function sendQuoteDataGas() {
+            let userPhone = prompt("DB 적재 및 안내 문자를 수신할 고객/담당자 연락처를 입력하세요:", "01082909971");
+            if (!userPhone) {
+                alert("연락처가 입력되지 않아 전송이 취소되었습니다.");
+                return;
+            }
+
+            let payload = {};
+
+            if (activeTab === 'haiorder') {
+                let storeName = document.getElementById('hai-store-name').value.replace(' 귀하', '').trim() || '미입력 매장';
+                payload = {
+                    quoteType: '하이오더',
+                    storeName: storeName,
+                    userPhone: userPhone,
+                    consultDay: '견적서 즉시발행',
+                    consultTime: '상관없음',
+                    table: document.getElementById('hai-table-qty').value,
+                    reader: document.getElementById('hai-reader-qty').value,
+                    k10: document.getElementById('hai-k10-qty').value,
+                    k15: document.getElementById('hai-k15-qty').value,
+                    waiting: parseInt(document.getElementById('hai-waiting-qty').value) > 0 ? '포함' : '미포함',
+                    monthlyPrice: document.getElementById('topQuoteAmount').innerText,
+                    oneTimePrice: document.getElementById('hai-onetime-total').innerText + ' 원'
+                };
+            } else if (activeTab === 'renewal') {
+                let storeName = document.getElementById('renewal-client-name').value.replace(' 귀하', '').trim() || '미입력 법인';
+                let totalDiff = document.getElementById('total-diff-renewal').innerText;
+                payload = {
+                    quoteType: '법인회선',
+                    storeName: storeName,
+                    userPhone: userPhone,
+                    consultDay: '견적서 즉시발행',
+                    consultTime: '상관없음',
+                    corpType: '법인사업자',
+                    corpCurrentTelecom: 'KT',
+                    corpCurrentFee: '월 ' + document.getElementById('total-charge-renewal').innerText + '원',
+                    corpQueryType: '법인회선 재약정 문의 (요금변동: ' + totalDiff + '원)'
+                };
+            } else {
+                let storeName = document.getElementById('total-client-name').value.replace(' 귀하', '').trim() || '미입력 고객';
+                payload = {
+                    quoteType: '인터넷/유무선',
+                    storeName: storeName,
+                    userPhone: userPhone,
+                    consultDay: '견적서 즉시발행',
+                    consultTime: '상관없음',
+                    inetTelecom: 'KT',
+                    inetProducts: '유무선 통합견적',
+                    inetPeriod: '3년 약정',
+                    mobileTelecom: 'KT',
+                    isCombined: '결합적용',
+                    inflowPath: '견적서시스템'
+                };
+            }
+
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert('구글 시트 DB 적재 및 Solapi 알림 문자 전송이 성공적으로 완료되었습니다.');
+            }).catch(err => {
+                alert('전송 중 오류가 발생했습니다: ' + err);
+            });
         }
 
         /* ----- 액션 스크립트 ----- */
