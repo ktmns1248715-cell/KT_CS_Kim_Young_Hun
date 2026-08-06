@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
@@ -62,6 +63,46 @@
             text-align: center;
             box-shadow: 0 2px 6px rgba(2, 132, 199, 0.06);
         }
+
+        /* 🚨 커스텀 강렬한 레드 경고창 모달 CSS */
+        .red-alert-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .red-alert-card {
+            background: #ffffff;
+            width: 90%; max-width: 380px;
+            border-radius: 16px;
+            border-top: 6px solid #dc2626;
+            box-shadow: 0 20px 30px rgba(220, 38, 38, 0.25);
+            padding: 24px 20px;
+            text-align: center;
+            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .red-alert-icon { font-size: 40px; margin-bottom: 8px; display: inline-block; animation: pulse 1.2s infinite; }
+        .red-alert-title { font-size: 18px; font-weight: 900; color: #dc2626; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .red-alert-msg {
+            font-size: 15px; font-weight: 800; color: #1e293b;
+            background: #fef2f2; border: 1px solid #fecaca;
+            padding: 12px; border-radius: 8px; margin-bottom: 18px; line-height: 1.4;
+        }
+        .red-alert-btn {
+            width: 100%; height: 42px; background: #dc2626; color: #ffffff;
+            font-size: 14px; font-weight: 800; border: none; border-radius: 8px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .red-alert-btn:hover { background: #b91c1c; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
         .tab-menu-container {
             width: 794px;
@@ -342,6 +383,17 @@
     </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
+    <!-- 🚨 강렬한 레드 경고 모달 레이어 -->
+    <div id="redAlertOverlay" class="red-alert-overlay">
+        <div class="red-alert-card">
+            <div class="red-alert-icon">🚨</div>
+            <div class="red-alert-title">경 고 (WARNING)</div>
+            <div class="red-alert-msg">여긴 내가 만든 내 세상이야, 불펌금지</div>
+            <button class="red-alert-btn" onclick="closeRedAlert()">확인 (닫기)</button>
+        </div>
+    </div>
+
     <div class="responsive-wrapper">
         
         <!-- 최상단 공식 시그니처 배지 -->
@@ -1060,9 +1112,22 @@
             initKeyLock();
         }
 
-        /* 단축키 및 무단 복사 차단 스크립트 */
+        /* 🚨 커스텀 레드 경고 모달 제어 스크립트 */
+        function showRedAlert() {
+            document.getElementById('redAlertOverlay').style.display = 'flex';
+        }
+
+        function closeRedAlert() {
+            document.getElementById('redAlertOverlay').style.display = 'none';
+        }
+
+        /* 단축키 및 무단 복사 차단 (우클릭 시 레드 모달 팝업) */
         function initKeyLock() {
-            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                showRedAlert();
+            });
+            
             document.addEventListener('dragstart', e => e.preventDefault());
             document.addEventListener('selectstart', e => e.preventDefault());
 
@@ -1072,6 +1137,7 @@
                    (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 65))) {
                     e.preventDefault();
                     e.stopPropagation();
+                    showRedAlert();
                     return false;
                 }
             });
