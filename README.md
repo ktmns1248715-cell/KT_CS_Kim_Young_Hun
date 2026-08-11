@@ -127,7 +127,7 @@
             margin-bottom: 8px; table-layout: fixed; box-sizing: border-box;
         }
         th, td {
-            border: 1px solid #a0a0a0 !important; padding: 4px 5px; height: 25px;
+            border: 1px solid #a0a0a0 !important; padding: 4px 5px; height: 26px;
             color: #000000 !important; vertical-align: middle !important; text-align: center !important;
             box-sizing: border-box; overflow: hidden;
         }
@@ -141,7 +141,7 @@
 
         .product-table th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: 700; font-size: 11px; }
 
-        input[type="text"], input[type="date"], select, textarea {
+        input[type="text"], input[type="date"], input[type="number"], select, textarea {
             width: 100%; height: 100%; border: none !important; background-color: #f8fafc !important;
             padding: 0 4px; border-radius: 3px; font-size: 11px; font-family: inherit;
             color: #000000 !important; -webkit-text-fill-color: #000000 !important; opacity: 1 !important;
@@ -150,10 +150,12 @@
 
         textarea { text-align: left !important; padding: 6px !important; resize: none; height: 55px; line-height: 1.4; }
 
+        /* html2canvas 변환 시 텍스트 노드 붕괴 완벽 차단 규격 */
         .capture-text-node {
             font-size: 11px !important; font-weight: 600 !important; color: #000000 !important;
-            text-align: center !important; width: 100%; display: inline-block; line-height: 1.4 !important;
-            white-space: normal !important; word-break: break-all; vertical-align: middle;
+            text-align: center !important; width: 100% !important; display: block !important;
+            line-height: 24px !important; height: 24px !important; white-space: nowrap !important;
+            overflow: hidden !important; text-overflow: ellipsis !important; box-sizing: border-box !important;
         }
 
         input[type="date"] { color: transparent !important; -webkit-text-fill-color: transparent !important; }
@@ -188,12 +190,22 @@
         }
         .biz-sub-tab-btn.active { background-color: #e60012; color: #ffffff; border-color: #e60012; }
 
-        .input-card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; }
-        .card-title { font-size: 11px; font-weight: bold; color: #1e293b; margin-bottom: 8px; border-left: 4px solid #e60012; padding-left: 6px; text-align: left !important; }
-        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 12px; }
-        .input-group { display: flex; align-items: center; justify-content: space-between; }
-        .input-group label { font-size: 10.5px; font-weight: 600; color: #334155; flex: 1; text-align: left !important; }
-        .input-group select, .input-group input { padding: 3px 6px; font-size: 10.5px; border: 1px solid #cbd5e1 !important; border-radius: 3px; width: 160px; background-color: #ffffff !important; }
+        /* BIZ 입력 영역 Table 변환용 전용 스타일 (렌더링 무결성) */
+        .biz-input-table {
+            width: 100% !important; margin-bottom: 12px !important; border: 1px solid #cbd5e1 !important;
+            background-color: #f8fafc !important; table-layout: fixed !important;
+        }
+        .biz-input-table th {
+            text-align: left !important; padding-left: 8px !important; background-color: #f1f5f9 !important;
+            font-size: 10.5px !important; font-weight: 700 !important; color: #334155 !important;
+        }
+        .biz-input-table td {
+            background-color: #ffffff !important; padding: 2px 4px !important;
+        }
+        .card-title { 
+            font-size: 11px; font-weight: bold; color: #1e293b; margin-bottom: 6px; 
+            border-left: 4px solid #e60012; padding-left: 6px; text-align: left !important; 
+        }
 
         .summary-banner {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1.5px solid #cbd5e1;
@@ -218,64 +230,34 @@
             width: 100%; overflow-x: auto; display: flex; flex-direction: column; align-items: center;
         }
     
-        /* 수량 조절 박스 (+ - 버튼 가로 배치 완전 보정) */
+        /* 수량 조절 박스 */
         .qty-box {
-            display: inline-flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 4px !important;
-            width: auto !important;
-            margin: 0 auto !important;
+            display: inline-flex !important; flex-direction: row !important;
+            align-items: center !important; justify-content: center !important;
+            gap: 4px !important; width: auto !important; margin: 0 auto !important;
         }
         .qty-box input {
-            width: 38px !important;
-            height: 22px !important;
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            text-align: center !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            border: 1px solid #cbd5e1 !important;
-            border-radius: 3px !important;
-            vertical-align: middle !important;
-            background-color: #ffffff !important;
+            width: 38px !important; height: 22px !important; font-size: 11px !important;
+            font-weight: 700 !important; text-align: center !important; padding: 0 !important;
+            margin: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 3px !important;
+            vertical-align: middle !important; background-color: #ffffff !important;
         }
         .qty-btn {
-            width: 20px !important;
-            height: 22px !important;
-            min-width: 20px !important;
-            min-height: 22px !important;
-            font-size: 12px !important;
-            font-weight: bold !important;
-            line-height: 1 !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            border: 1px solid #a0a0a0 !important;
-            background: #ffffff !important;
-            border-radius: 3px !important;
-            color: #333333 !important;
-            cursor: pointer !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            vertical-align: middle !important;
-            user-select: none !important;
-            transition: background 0.15s !important;
+            width: 20px !important; height: 22px !important; min-width: 20px !important;
+            min-height: 22px !important; font-size: 12px !important; font-weight: bold !important;
+            line-height: 1 !important; display: inline-flex !important; align-items: center !important;
+            justify-content: center !important; border: 1px solid #a0a0a0 !important; background: #ffffff !important;
+            border-radius: 3px !important; color: #333333 !important; cursor: pointer !important;
+            padding: 0 !important; margin: 0 !important; vertical-align: middle !important;
+            user-select: none !important; transition: background 0.15s !important;
         }
         .qty-btn:hover {
-            background-color: #e2e8f0 !important;
-            border-color: #004b8d !important;
-            color: #004b8d !important;
+            background-color: #e2e8f0 !important; border-color: #004b8d !important; color: #004b8d !important;
         }
 
-        /* 하이오더 소분류 그룹 라벨 (a, b, c) 왼쪽 정렬 완전 보정 */
         .group-label {
-            text-align: left !important;
-            padding-left: 10px !important;
-            font-weight: 700 !important;
-            background-color: #f8fafc !important;
-            color: #004b8d !important;
+            text-align: left !important; padding-left: 10px !important;
+            font-weight: 700 !important; background-color: #f8fafc !important; color: #004b8d !important;
         }
     </style>
 </head>
@@ -297,7 +279,7 @@
         <div class="signature-badge">
             <div style="font-size:11px; color:#0284c7; font-weight:800; letter-spacing:1px; margin-bottom:2px;">KT CS TELECOM AUTOMATION ARCHITECT</div>
             <div style="font-size:13px; color:#1e293b; font-weight:700;">
-                🔒 본 시스템은 <span style="color:#0284c7;">KT CS 김영훈</span>의  지적 자산입니다. (무단 복제 및 사용 금지)
+                🔒 본 시스템은 <span style="color:#0284c7;">KT CS 김영훈</span>의 지적 자산입니다. (무단 복제 및 사용 금지)
             </div>
         </div>
 
@@ -375,7 +357,6 @@
                     <th>담당자</th>
                     <td>
                         <select class="manager-select blue-readonly" onchange="updateManagerInfo(this, 'renewal')">
-                            <!-- 정렬된 12명 명단 적용 -->
                             <option value="반청용 부장" data-phone="010-3484-0709">반청용 부장</option>
                             <option value="김문신 파트장" data-phone="010-5555-6031">김문신 파트장</option>
                             <option value="이경태 파트장" data-phone="010-2622-6222">이경태 파트장</option>
@@ -692,7 +673,7 @@
                     <td><input type="text" value="이창호" readonly /></td>
                 </tr>
                 <tr class="amount-row">
-                    <th>월요(VAT포함)</th>
+                    <th>월요금(VAT포함)</th>
                     <td class="benefit-highlight" id="topQuoteAmount">0원</td>
                     <th>주소</th>
                     <td><input type="text" value="대전 서구 갈마로 160(괴정동) KT 인재개발원" readonly /></td>
@@ -1015,39 +996,37 @@
                 </tr>
             </table>
 
-            <!-- BIZ 대량 조건 입력 카드 -->
-            <div class="input-card">
-                <div class="card-title">■ BIZ 대량 수량 및 가입 조건 선택</div>
-                <div class="input-grid">
-                    <div class="input-group">
-                        <label for="tvCount">1. TV 제공수 (직접 입력):</label>
-                        <input type="number" id="tvCount" value="19" min="0" max="500" oninput="calculateBiz()">
-                    </div>
-                    <div class="input-group">
-                        <label for="internetProd">2. 인터넷 상품 선택:</label>
+            <!-- BIZ 대량 조건 입력 카드 (html2canvas 무결성 구조 Table 적용) -->
+            <div class="card-title">■ BIZ 대량 수량 및 가입 조건 선택</div>
+            <table class="biz-input-table">
+                <tr>
+                    <th style="width: 25%;">1. TV 제공수 (직접 입력):</th>
+                    <td style="width: 25%;"><input type="number" id="tvCount" value="19" min="0" max="500" oninput="calculateBiz()"></td>
+                    <th style="width: 25%;">2. 인터넷 상품 선택:</th>
+                    <td style="width: 25%;">
                         <select id="internetProd" onchange="calculateBiz()">
                             <option value="인터넷 베이직 (500M)" selected>인터넷 베이직 (500M)</option>
                             <option value="인터넷 슬림 (100M)">인터넷 슬림 (100M)</option>
                             <option value="인터넷 에센스 (1G)">인터넷 에센스 (1G)</option>
                         </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="tvProd">3. TV 상품 선택:</label>
-                        <select id="tvProd" onchange="calculateBiz()"></select>
-                    </div>
-                    <div class="input-group">
-                        <label for="stbProd">4. TV STB 선택:</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>3. TV 상품 선택:</th>
+                    <td><select id="tvProd" onchange="calculateBiz()"></select></td>
+                    <th>4. TV STB 선택:</th>
+                    <td>
                         <select id="stbProd" onchange="calculateBiz()">
                             <option value="올인원 STB" selected>올인원 STB</option>
                             <option value="일반 STB">일반 STB</option>
                         </select>
-                    </div>
-                    <div class="input-group" style="grid-column: span 2;">
-                        <label for="familyLines">5. 인터넷 패밀리 가능 회선수 (명의당 최대 2회선):</label>
-                        <input type="number" id="familyLines" value="0" min="0" max="2" oninput="calculateBiz()">
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">5. 인터넷 패밀리 가능 회선수 (명의당 최대 2회선):</th>
+                    <td colspan="2"><input type="number" id="familyLines" value="0" min="0" max="2" oninput="calculateBiz()"></td>
+                </tr>
+            </table>
 
             <!-- 산출 요약 배너 -->
             <div class="summary-banner">
@@ -1447,7 +1426,6 @@
         }
 
         function sendQuoteDataGas() {
-            // 고정 수신 번호 유지 (수정 차단)
             const userPhone = "01082909971";
 
             let payload = {
@@ -1679,14 +1657,21 @@
             el.setSelectionRange(cursorPosition + (newLength - originalLength), cursorPosition + (newLength - originalLength));
         }
 
+        /* 📸 [최종 보정 Engine] Table 구조 완전 보존 렌더링 */
         function generateActiveInvoiceImage(format) {
             const originArea = document.getElementById(`capture-area-${activeTab}`);
             if (document.activeElement) document.activeElement.blur();
 
-            originArea.querySelectorAll('.no-print-target').forEach(btn => btn.classList.add('hide-for-photo'));
-
             const cloneArea = originArea.cloneNode(true);
-            cloneArea.style.position = 'fixed'; cloneArea.style.top = '-9999px'; cloneArea.style.left = '-9999px'; cloneArea.style.display = 'block';
+            cloneArea.querySelectorAll('.no-print-target').forEach(btn => btn.style.display = 'none');
+
+            cloneArea.style.position = 'absolute';
+            cloneArea.style.top = '-9999px';
+            cloneArea.style.left = '-9999px';
+            cloneArea.style.width = '794px';
+            cloneArea.style.backgroundColor = '#ffffff';
+            cloneArea.style.display = 'block';
+            
             document.body.appendChild(cloneArea);
 
             const originInputs = originArea.querySelectorAll('input, select, textarea');
@@ -1695,6 +1680,7 @@
             originInputs.forEach((originInput, idx) => {
                 const cloneInput = cloneInputs[idx];
                 if (!cloneInput) return;
+
                 let text = '';
                 if (originInput.tagName === 'SELECT') {
                     text = originInput.options[originInput.selectedIndex] ? originInput.options[originInput.selectedIndex].text : '';
@@ -1707,46 +1693,66 @@
 
                 const textNode = document.createElement('span');
                 textNode.className = 'capture-text-node';
-                if(originInput.classList.contains('blue-readonly')) {
-                    textNode.style.color = '#004b8d'; textNode.style.fontWeight = 'bold';
+                
+                if (originInput.classList.contains('blue-readonly')) {
+                    textNode.style.color = '#004b8d'; 
+                    textNode.style.fontWeight = 'bold';
+                }
+                if (originInput.id === 'tvCount' || originInput.id === 'familyLines' || originInput.id === 'feeVal' || originInput.id === 'giftVal') {
+                    textNode.style.fontWeight = '800';
+                    textNode.style.color = '#1e293b';
                 }
 
                 if (originInput.tagName === 'TEXTAREA') {
-                    textNode.style.whiteSpace = 'pre-wrap'; textNode.style.textAlign = 'left'; textNode.style.padding = '6px'; textNode.style.display = 'block';
+                    textNode.style.whiteSpace = 'pre-wrap'; 
+                    textNode.style.textAlign = 'left'; 
+                    textNode.style.padding = '6px'; 
+                    textNode.style.display = 'block';
+                    textNode.style.lineHeight = '1.4';
+                    textNode.style.height = 'auto';
                 }
 
                 textNode.innerText = text;
-                if(cloneInput.parentNode) cloneInput.parentNode.replaceChild(textNode, cloneInput);
+                if (cloneInput.parentNode) cloneInput.parentNode.replaceChild(textNode, cloneInput);
             });
 
-            html2canvas(cloneArea, {
-                scale: 3, useCORS: true, backgroundColor: '#ffffff', logging: false, letterRendering: true
-            }).then(canvas => {
-                const imageData = canvas.toDataURL('image/jpeg', 1.0);
-                let fileName = '견적서';
-                if(activeTab === 'renewal') fileName = '법인회선_재약정_견적서';
-                else if(activeTab === 'total') fileName = '유무선_통합_견적서';
-                else if(activeTab === 'haiorder') fileName = '하이오더_견적서';
-                else if(activeTab === 'bizcalc') fileName = 'KT_BIZ_인터넷_TV_표준견적서';
+            setTimeout(() => {
+                html2canvas(cloneArea, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: 794,
+                    windowWidth: 794
+                }).then(canvas => {
+                    const imageData = canvas.toDataURL('image/jpeg', 1.0);
+                    let fileName = '견적서';
+                    if (activeTab === 'renewal') fileName = '법인회선_재약정_견적서';
+                    else if (activeTab === 'total') fileName = '유무선_통합_견적서';
+                    else if (activeTab === 'haiorder') fileName = '하이오더_견적서';
+                    else if (activeTab === 'bizcalc') fileName = 'KT_BIZ_인터넷_TV_표준견적서';
 
-                if (format === 'jpg') {
-                    const link = document.createElement('a'); link.href = imageData; link.download = `${fileName}.jpg`; link.click();
-                } else if (format === 'pdf') {
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const imgProps = pdf.getImageProperties(imageData);
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                    pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                    pdf.save(`${fileName}.pdf`);
-                }
-                originArea.querySelectorAll('.no-print-target').forEach(btn => btn.classList.remove('hide-for-photo'));
-                document.body.removeChild(cloneArea);
-            }).catch(err => {
-                originArea.querySelectorAll('.no-print-target').forEach(btn => btn.classList.remove('hide-for-photo'));
-                if(document.body.contains(cloneArea)) document.body.removeChild(cloneArea);
-                alert("파일 생성 오류: " + err);
-            });
+                    if (format === 'jpg') {
+                        const link = document.createElement('a');
+                        link.href = imageData;
+                        link.download = `${fileName}.jpg`;
+                        link.click();
+                    } else if (format === 'pdf') {
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('p', 'mm', 'a4');
+                        const imgProps = pdf.getImageProperties(imageData);
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                        pdf.addImage(imageData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                        pdf.save(`${fileName}.pdf`);
+                    }
+                    
+                    document.body.removeChild(cloneArea);
+                }).catch(err => {
+                    if (document.body.contains(cloneArea)) document.body.removeChild(cloneArea);
+                    alert("파일 생성 오류: " + err);
+                });
+            }, 100);
         }
     </script>
 </body>
