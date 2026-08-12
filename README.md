@@ -329,7 +329,7 @@
                     <th>사업자번호</th>
                     <td><input type="text" id="renewal-biz-num" placeholder="고객 사업자번호 입력" /></td>
                     <th>대표자명</th>
-                    <td><input type="text" value="이창호" readonly /></td>
+                    <td><input type="text" value="박은영" readonly /></td>
                 </tr>
                 <tr>
                     <th>총 제공되는 혜택</th>
@@ -493,7 +493,7 @@
                     <th>생년월일/사업자</th>
                     <td><input type="text" id="total-biz-num" placeholder="생년월일 또는 사업자번호" /></td>
                     <th>대표자명</th>
-                    <td><input type="text" value="이창호" readonly /></td>
+                    <td><input type="text" value="박은영" readonly /></td>
                 </tr>
                 <tr>
                     <th>총 제공 혜택</th>
@@ -670,7 +670,7 @@
                     <th>서비스명</th>
                     <td><input type="text" value="하이오더 외" readonly /></td>
                     <th>대표자명</th>
-                    <td><input type="text" value="이창호" readonly /></td>
+                    <td><input type="text" value="박은영" readonly /></td>
                 </tr>
                 <tr class="amount-row">
                     <th>월요금(VAT포함)</th>
@@ -938,7 +938,7 @@
                     <th>사업자번호</th>
                     <td><input type="text" id="biz-client-bizno" placeholder="고객 사업자번호 입력" /></td>
                     <th>대표자명</th>
-                    <td><input type="text" value="이창호" readonly /></td>
+                    <td><input type="text" value="박은영" readonly /></td>
                 </tr>
                 <tr>
                     <th>총 제공 혜택</th>
@@ -1018,7 +1018,7 @@
                     <td>
                         <select id="stbProd" onchange="calculateBiz()">
                             <option value="올인원 STB" selected>올인원 STB</option>
-                            <option value="일반 STB">일반 STB</option>
+                            <option value="STB A">STB A</option>
                         </select>
                     </td>
                 </tr>
@@ -1134,7 +1134,7 @@
                     "OTV Biz 벌크 라이트": { base: 8800, addNormal: 8800, install: 11000 },
                     "OTV Biz 벌크 에센스": { base: 11000, addNormal: 11000, install: 11000 }
                 },
-                stb: { "올인원 STB": 3300, "일반 STB": 2200 },
+                stb: { "올인원 STB": 3300, "STB A": 4400 },
                 tvInstallBase: 4400
             },
             "2": {
@@ -1152,7 +1152,7 @@
                     "OTV Biz 벌크 라이트": { base: 7975, addNormal: 7975, install: 11000 },
                     "OTV Biz 벌크 에센스": { base: 10175, addNormal: 10175, install: 11000 }
                 },
-                stb: { "올인원 STB": 3300, "일반 STB": 2200 },
+                stb: { "올인원 STB": 3300, "STB A": 4400 },
                 tvInstallBase: 4400
             },
             "3": {
@@ -1170,7 +1170,7 @@
                     "OTV Biz 벌크 라이트": { base: 7150, addNormal: 7150, install: 11000 },
                     "OTV Biz 벌크 에센스": { base: 9350, addNormal: 9350, install: 11000 }
                 },
-                stb: { "올인원 STB": 3300, "일반 STB": 2200 },
+                stb: { "올인원 STB": 3300, "STB A": 4400 },
                 tvInstallBase: 4400
             }
         };
