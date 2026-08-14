@@ -1162,7 +1162,7 @@
 
     <script>
         // 🔑 [접속 비밀번호 설정] 여기서 원하는 비밀번호로 변경할 수 있습니다.
-        const SYSTEM_PASSWORD = "0709";
+        const SYSTEM_PASSWORD = "0729";
 
         let activeTab = 'renewal';
         let currentBizTab = '1';
