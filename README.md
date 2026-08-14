@@ -29,6 +29,46 @@
             input[type="text"], select, textarea { background-color: #f8fafc !important; color: #000000 !important; }
         }
 
+        /* 🔒 전체 화면 보안 인증 오버레이 */
+        .auth-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(8px);
+            z-index: 999999; display: flex; justify-content: center; align-items: center;
+        }
+        .auth-card {
+            background: #ffffff; width: 90%; max-width: 360px;
+            border-radius: 16px; border-top: 6px solid #004b8d;
+            box-shadow: 0 25px 50px -12px rgba(0, 75, 141, 0.35);
+            padding: 30px 24px; text-align: center;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .auth-icon { font-size: 42px; margin-bottom: 10px; display: inline-block; }
+        .auth-title { font-size: 19px; font-weight: 900; color: #004b8d; margin-bottom: 6px; letter-spacing: -0.5px; }
+        .auth-sub { font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 20px; line-height: 1.4; }
+        .auth-input {
+            width: 100%; height: 44px; border: 2px solid #cbd5e1 !important;
+            border-radius: 8px; font-size: 16px; font-weight: 700;
+            text-align: center !important; letter-spacing: 4px; color: #1e293b !important;
+            background: #f8fafc !important; margin-bottom: 12px; outline: none; transition: border-color 0.2s;
+        }
+        .auth-input:focus { border-color: #004b8d !important; background: #ffffff !important; }
+        .auth-btn {
+            width: 100%; height: 44px; background: #004b8d; color: #ffffff;
+            font-size: 15px; font-weight: 800; border: none; border-radius: 8px;
+            cursor: pointer; transition: background 0.2s, transform 0.1s;
+        }
+        .auth-btn:hover { background: #003666; }
+        .auth-btn:active { transform: scale(0.98); }
+        .auth-error {
+            color: #dc2626; font-size: 12px; font-weight: 700; margin-top: 10px; display: none;
+        }
+        .shake { animation: shake 0.35s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
         .watermark-overlay {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-25deg);
@@ -262,6 +302,18 @@
     </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
+    <!-- 🔐 시스템 접속 보안 인증 모달 (첫 화면 암호) -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-card" id="authCard">
+            <div class="auth-icon">🔒</div>
+            <div class="auth-title">시스템 보안 인증</div>
+            <div class="auth-sub">인가된 사용자만 접속 가능합니다.<br/>비밀번호를 입력하세요.</div>
+            <input type="password" id="authPasswordInput" class="auth-input" placeholder="••••" maxlength="20" autofocus />
+            <button class="auth-btn" onclick="validatePassword()">확인 (접속하기)</button>
+            <div id="authErrorMsg" class="auth-error">⚠️ 비밀번호가 일치하지 않습니다.</div>
+        </div>
+    </div>
 
     <!-- 🚨 강렬한 레드 경고 모달 레이어 -->
     <div id="redAlertOverlay" class="red-alert-overlay">
@@ -1109,6 +1161,9 @@
     </div>
 
     <script>
+        // 🔑 [접속 비밀번호 설정] 여기서 원하는 비밀번호로 변경할 수 있습니다.
+        const SYSTEM_PASSWORD = "0709";
+
         let activeTab = 'renewal';
         let currentBizTab = '1';
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzriskJha8aL9cnErvdImPwMBxLi690oyLCUgrTBHJHcvHiWlNvGwU3ferdftgx-sml/exec";
@@ -1185,6 +1240,31 @@
             recalcAllHaiorder();
             initKeyLock();
             switchBizSubTab('1');
+
+            // 비밀번호 입력창 엔터키 이벤트 바인딩
+            const authInput = document.getElementById('authPasswordInput');
+            if (authInput) {
+                authInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') validatePassword();
+                });
+            }
+        }
+
+        // 🔐 비밀번호 검증 함수
+        function validatePassword() {
+            const input = document.getElementById('authPasswordInput');
+            const errMsg = document.getElementById('authErrorMsg');
+            const card = document.getElementById('authCard');
+
+            if (input.value === SYSTEM_PASSWORD) {
+                document.getElementById('authOverlay').style.display = 'none';
+            } else {
+                errMsg.style.display = 'block';
+                card.classList.add('shake');
+                input.value = '';
+                input.focus();
+                setTimeout(() => { card.classList.remove('shake'); }, 400);
+            }
         }
 
         function showRedAlert() { document.getElementById('redAlertOverlay').style.display = 'flex'; }
