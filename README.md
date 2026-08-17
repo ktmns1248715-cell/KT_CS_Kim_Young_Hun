@@ -21,14 +21,6 @@
             -webkit-font-smoothing: antialiased; position: relative;
         }
 
-        @media (prefers-color-scheme: dark) {
-            body { background-color: #f4f6f9 !important; }
-            .invoice-container { background-color: #ffffff !important; color: #000000 !important; }
-            th { background-color: #f1f5f9 !important; color: #000000 !important; }
-            td { background-color: #ffffff !important; color: #000000 !important; border-color: #a0a0a0 !important; }
-            input[type="text"], select, textarea { background-color: #f8fafc !important; color: #000000 !important; }
-        }
-
         /* 🔒 전체 화면 보안 인증 오버레이 */
         .auth-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -61,19 +53,14 @@
         }
         .auth-btn:hover { background: #003666; }
         .auth-btn:active { transform: scale(0.98); }
-        .auth-error {
-            color: #dc2626; font-size: 12px; font-weight: 700; margin-top: 10px; display: none;
-        }
+        .auth-error { color: #dc2626; font-size: 12px; font-weight: 700; margin-top: 10px; display: none; }
 
-        /* 📩 비밀번호 신청하기 링크 및 서브 폼 스타일 */
         .auth-req-link {
             margin-top: 14px; font-size: 12px; color: #64748b; font-weight: 600; cursor: pointer; text-decoration: underline; transition: color 0.2s;
         }
         .auth-req-link:hover { color: #0284c7; }
         
-        .req-form-area {
-            display: none; margin-top: 14px; padding-top: 14px; border-top: 1px dashed #cbd5e1;
-        }
+        .req-form-area { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px dashed #cbd5e1; }
         .req-input {
             width: 100%; height: 38px; border: 1px solid #cbd5e1 !important;
             border-radius: 6px; font-size: 13px; font-weight: 600;
@@ -83,8 +70,7 @@
         .req-input:focus { border-color: #0284c7 !important; background: #ffffff !important; }
         .req-submit-btn {
             width: 100%; height: 38px; background: #0284c7; color: #ffffff;
-            font-size: 13.5px; font-weight: 800; border: none; border-radius: 6px;
-            cursor: pointer; transition: background 0.2s;
+            font-size: 13.5px; font-weight: 800; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s;
         }
         .req-submit-btn:hover { background: #0369a1; }
 
@@ -139,7 +125,6 @@
         @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* 대분류 메인 탭 메뉴 */
         .tab-menu-container {
             width: 794px; display: flex; gap: 8px; margin-bottom: 12px;
         }
@@ -185,7 +170,7 @@
         }
         .title-area {
             font-size: 24px; font-weight: 800; color: #004b8d !important;
-            text-align: center flex-grow: 1; letter-spacing: -0.5px; margin-right: 40px;
+            text-align: center; flex-grow: 1; letter-spacing: -0.5px; margin-right: 40px;
         }
 
         table {
@@ -216,7 +201,6 @@
 
         textarea { text-align: left !important; padding: 6px !important; resize: none; height: 55px; line-height: 1.4; }
 
-        /* html2canvas 변환 시 텍스트 노드 붕괴 완벽 차단 규격 */
         .capture-text-node {
             font-size: 11px !important; font-weight: 600 !important; color: #000000 !important;
             text-align: center !important; width: 100% !important; display: block !important;
@@ -246,7 +230,6 @@
         }
         .bg-alert { background-color: #fffbeb !important; color: #b45309 !important; }
 
-        /* BIZ 대량 계산기 전용 소분류 탭 스타일 */
         .biz-sub-tab-container {
             display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 2px solid #cbd5e1;
         }
@@ -256,7 +239,6 @@
         }
         .biz-sub-tab-btn.active { background-color: #e60012; color: #ffffff; border-color: #e60012; }
 
-        /* BIZ 입력 영역 Table 변환용 전용 스타일 (렌더링 무결성) */
         .biz-input-table {
             width: 100% !important; margin-bottom: 12px !important; border: 1px solid #cbd5e1 !important;
             background-color: #f8fafc !important; table-layout: fixed !important;
@@ -296,7 +278,6 @@
             width: 100%; overflow-x: auto; display: flex; flex-direction: column; align-items: center;
         }
     
-        /* 수량 조절 박스 */
         .qty-box {
             display: inline-flex !important; flex-direction: row !important;
             align-items: center !important; justify-content: center !important;
@@ -329,27 +310,24 @@
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
-    <!-- 🔐 시스템 접속 보안 인증 모달 (첫 화면 암호 및 신청 기능) -->
+    <!-- 🔐 시스템 접속 보안 인증 모달 -->
     <div id="authOverlay" class="auth-overlay">
         <div class="auth-card" id="authCard">
             <div class="auth-icon">🔒</div>
             <div class="auth-title">시스템 보안 인증</div>
             <div class="auth-sub">인가된 사용자만 접속 가능합니다.<br/>비밀번호를 입력하세요.</div>
             
-            <!-- 비밀번호 입력 영역 -->
-            <input type="password" id="authPasswordInput" class="auth-input" placeholder="••••" maxlength="20" autofocus />
-            <button class="auth-btn" onclick="validatePassword()">확인 (접속하기)</button>
-            <div id="authErrorMsg" class="auth-error">⚠️ 비밀번호가 일치하지 않습니다.</div>
+            <input type="password" id="authPasswordInput" class="auth-input" placeholder="••••" maxlength="20" autocomplete="current-password" />
+            <button type="button" class="auth-btn" id="authSubmitBtn">확인 (접속하기)</button>
+            <div id="authErrorMsg" class="auth-error">⚠️ 비밀번호가 일치하지 않습니다. (정답: 0729)</div>
             
-            <!-- 비밀번호 신청 토글 링크 -->
-            <div class="auth-req-link" onclick="toggleRequestForm()">비밀번호가 없으신가요? (암호 신청하기)</div>
+            <div class="auth-req-link" id="toggleReqFormBtn">비밀번호가 없으신가요? (암호 신청하기)</div>
 
-            <!-- 비밀번호 신청 폼 (기본 숨김) -->
             <div id="reqFormArea" class="req-form-area">
                 <div style="font-size: 11.5px; font-weight: 700; color: #0284c7; margin-bottom: 8px;">🔑 비밀번호 발급 신청</div>
                 <input type="text" id="reqUserName" class="req-input" placeholder="신청자 성함 입력" maxlength="20" />
                 <input type="text" id="reqUserPhone" class="req-input" placeholder="연락처 (예: 010-1234-5678)" maxlength="15" />
-                <button class="req-submit-btn" id="reqSubmitBtn" onclick="submitPasswordRequest()">신청 문자/알림 전송</button>
+                <button type="button" class="req-submit-btn" id="reqSubmitBtn">신청 문자/알림 전송</button>
             </div>
         </div>
     </div>
@@ -374,12 +352,12 @@
             </div>
         </div>
 
-        <!-- 통합 대분류 탭 메뉴 (4대 견적서) -->
+        <!-- 통합 대분류 탭 메뉴 -->
         <div class="tab-menu-container">
             <button class="tab-btn active" id="btn-renewal" onclick="switchEstimateTab('renewal')">법인회선 재약정</button>
             <button class="tab-btn" id="btn-total" onclick="switchEstimateTab('total')">유무선 통합</button>
             <button class="tab-btn" id="btn-haiorder" onclick="switchEstimateTab('haiorder')">하이오더</button>
-            <button class="tab-btn" id="btn-bizcalc" onclick="switchEstimateTab('bizcalc')" style="background-color:#e60012; color:#fff;">🏢 BIZ 대량 계산기</button>
+            <button class="tab-btn" id="btn-bizcalc" onclick="switchEstimateTab('bizcalc')" style="background-color:#e60012; color:#fff;">🏢 BIZ 대량 계산기 (30회선 이상)</button>
         </div>
 
         <!-- ================= [서식 1: 법인회선 재약정 견적서] ================= -->
@@ -442,7 +420,7 @@
                 </tr>
                 <tr>
                     <th rowspan="2">구비서류</th>
-                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 10px; line-height: 1.45; user-select: none; text-align: center !important;">
+                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 10px; line-height: 1.45; text-align: center !important;">
                         <span class="capture-text-node" style="font-size: 10px !important;">대표자신분증, 사업자등록증, 통장사본</span>
                     </td>
                     <th>담당자</th>
@@ -469,8 +447,8 @@
                     <td><input type="text" id="manager-phone-renewal" class="blue-readonly" value="010-8290-9971" readonly /></td>
                 </tr>
                 <tr>
-                    <th style="user-select: none;">견적유효기간</th>
-                    <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; user-select: none; text-align: center !important;">
+                    <th>견적유효기간</th>
+                    <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; text-align: center !important;">
                         <span class="capture-text-node" style="color: #004b8d !important; font-weight: bold !important;">견적서 제출일로부터 30일 이내</span>
                     </td>
                     <th>이메일주소</th>
@@ -514,7 +492,7 @@
                 </tbody>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="color: #d91414 !important; background-color: #fef2f2 !important; text-align: center !important;">필수 안내</th>
                     <td class="notice-text bg-alert" style="padding: 10px; font-weight: 700;">
@@ -525,7 +503,7 @@
                 </tr>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="text-align: center !important;">유의 사항</th>
                     <td class="notice-text" style="padding: 10px; background-color: #fafafa; color: #555 !important;">
@@ -606,7 +584,7 @@
                 </tr>
                 <tr>
                     <th rowspan="2">구비서류</th>
-                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 9.5px; line-height: 1.35; user-select: none; text-align: left !important; padding-left: 8px;">
+                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 9.5px; line-height: 1.35; text-align: left !important; padding-left: 8px;">
                         대표자신분증, 사업자등록증, 통장사본
                     </td>
                     <th>담당자</th>
@@ -633,8 +611,8 @@
                     <td><input type="text" id="manager-phone-total" class="blue-readonly" value="010-8290-9971" readonly /></td>
                 </tr>
                 <tr>
-                    <th style="user-select: none;">견적유효기간</th>
-                    <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; user-select: none; text-align: center !important;">
+                    <th>견적유효기간</th>
+                    <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; text-align: center !important;">
                         <span class="capture-text-node" style="color: #004b8d !important; font-weight: bold !important;">견적서 제출일로부터 30일 이내</span>
                     </td>
                     <th>이메일주소</th>
@@ -691,7 +669,7 @@
                 </tbody>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="color: #d91414 !important; background-color: #fef2f2 !important; text-align: center !important;">필수 안내</th>
                     <td class="notice-text bg-alert" style="padding: 10px; font-weight: 700;">
@@ -702,7 +680,7 @@
                 </tr>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="text-align: center !important;">유의 사항</th>
                     <td class="notice-text" style="padding: 10px; background-color: #fafafa; color: #555 !important;">
@@ -788,7 +766,7 @@
                 </tr>
                 <tr>
                     <th rowspan="2">구비서류</th>
-                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 10px; line-height: 1.45; user-select: none; text-align: center !important;">
+                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 10px; line-height: 1.45; text-align: center !important;">
                         <span class="capture-text-node" style="font-size: 10px !important;">대표자신분증, 사업자등록증, 통장사본</span>
                     </td>
                     <th>담당자</th>
@@ -815,8 +793,8 @@
                     <td><input type="text" id="manager-phone-haiorder" class="blue-readonly" value="010-8290-9971" readonly /></td>
                 </tr>
                 <tr>
-                    <th style="user-select: none;">견적유효기간</th>
-                    <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; user-select: none; text-align: center !important;">
+                    <th>견적유효기간</th>
+                    <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; text-align: center !important;">
                         <span class="capture-text-node" style="color: #004b8d !important; font-weight: bold !important;">견적서 제출일로부터 30일 이내</span>
                     </td>
                     <th>이메일주소</th>
@@ -824,7 +802,7 @@
                 </tr>
             </table>
 
-            <div class="section-title-hai">하이오더 서비스 견적 - 메뉴판</div>
+            <div class="section-title-hai" style="font-size: 11px; font-weight: bold; color: #1e293b; margin: 10px 0 4px 0; border-left: 4px solid #004b8d; padding-left: 6px;">하이오더 서비스 견적 - 메뉴판</div>
             <table class="items-hai" data-group="g1">
                 <thead>
                     <tr>
@@ -886,7 +864,7 @@
                 </tbody>
             </table>
 
-            <div class="section-title-hai">알림판 (주방)</div>
+            <div class="section-title-hai" style="font-size: 11px; font-weight: bold; color: #1e293b; margin: 10px 0 4px 0; border-left: 4px solid #004b8d; padding-left: 6px;">알림판 (주방)</div>
             <table class="items-hai" data-group="g2">
                 <thead>
                     <tr>
@@ -942,16 +920,16 @@
                 </tbody>
             </table>
 
-            <div class="grand-total-hai">
+            <div class="grand-total-hai" style="background:#f1f5f9; padding:8px; text-align:right; font-weight:bold; border:1px solid #a0a0a0; margin-bottom:8px;">
                 <table>
                     <tr>
-                        <td class="label">하이오더 합계 (①+②)</td>
-                        <td class="value" id="haiorderTotal">0원</td>
+                        <td class="label" style="border:none; text-align:right;">하이오더 합계 (①+②):</td>
+                        <td class="value" id="haiorderTotal" style="border:none; text-align:right; color:#004b8d; font-size:13px;">0원</td>
                     </tr>
                 </table>
             </div>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="color: #d91414 !important; background-color: #fef2f2 !important; text-align: center !important;">필수 안내</th>
                     <td class="notice-text bg-alert" style="padding: 10px; font-weight: 700;">
@@ -962,7 +940,7 @@
                 </tr>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="text-align: center !important;">유의 사항</th>
                     <td class="notice-text" style="padding: 10px; background-color: #fafafa; color: #555 !important;">
@@ -983,7 +961,7 @@
             </table>
         </div>
 
-        <!-- ================= [서식 4: BIZ 대량 계산기 통합 영역] ================= -->
+        <!-- ================= [서식 4: BIZ 대량 계산기 (30회선 이상 기준 적용)] ================= -->
         <div class="invoice-container" id="capture-area-bizcalc" style="display: none;">
             <div class="watermark-overlay">KT CS 대구센터 김영훈 무단 복사 및 사용을 금지합니다</div>
 
@@ -1001,17 +979,15 @@
 
             <div class="invoice-header">
                 <div class="logo-area">kt</div>
-                <div class="title-area">KT 인터넷 & TV BIZ 표준 견적서</div>
+                <div class="title-area">KT 인터넷 & TV BIZ 30회선 이상 표준 견적서</div>
             </div>
 
-            <!-- 약정 선택 소분류 탭 -->
             <div class="biz-sub-tab-container">
                 <button class="biz-sub-tab-btn active" onclick="switchBizSubTab('1')">요금제 (3년약정)</button>
                 <button class="biz-sub-tab-btn" onclick="switchBizSubTab('2')">BIZ벌크 요금제 (4년약정)</button>
                 <button class="biz-sub-tab-btn" onclick="switchBizSubTab('3')">BIZ벌크 요금제 (5년약정)</button>
             </div>
 
-            <!-- 상단 고객 & 공급자 헤더 표 -->
             <table class="info-table">
                 <tr>
                     <th>견적일자</th>
@@ -1051,7 +1027,7 @@
                 </tr>
                 <tr>
                     <th rowspan="2">구비서류</th>
-                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 9.5px; line-height: 1.35; user-select: none; text-align: center !important;">
+                    <td rowspan="2" class="notice-text lock-cell" style="background-color: #fafafa; font-size: 9.5px; line-height: 1.35; text-align: center !important;">
                         <span class="capture-text-node">대표자신분증, 사업자등록증, 통장사본</span>
                     </td>
                     <th>담당자</th>
@@ -1078,7 +1054,7 @@
                     <td><input type="text" id="manager-phone-bizcalc" class="blue-readonly" value="010-8290-9971" readonly /></td>
                 </tr>
                 <tr>
-                    <th style="user-select: none;">견적유효기간</th>
+                    <th>견적유효기간</th>
                     <td class="notice-text lock-cell" style="background-color: #ffffff; font-weight: bold; color: #004b8d !important; text-align: center !important;">
                         <span class="capture-text-node" style="color: #004b8d !important; font-weight: bold !important;">견적서 제출일로부터 30일 이내</span>
                     </td>
@@ -1087,12 +1063,11 @@
                 </tr>
             </table>
 
-            <!-- BIZ 대량 조건 입력 카드 (html2canvas 무결성 구조 Table 적용) -->
-            <div class="card-title">■ BIZ 대량 수량 및 가입 조건 선택</div>
+            <div class="card-title">■ BIZ 30회선 이상 대량 수량 및 가입 조건 선택</div>
             <table class="biz-input-table">
                 <tr>
-                    <th style="width: 25%;">1. TV 제공수 (직접 입력):</th>
-                    <td style="width: 25%;"><input type="number" id="tvCount" value="19" min="0" max="500" oninput="calculateBiz()"></td>
+                    <th style="width: 25%;">1. TV 제공수 (30회선 이상):</th>
+                    <td style="width: 25%;"><input type="number" id="tvCount" value="30" min="30" max="500" oninput="calculateBiz()"></td>
                     <th style="width: 25%;">2. 인터넷 상품 선택:</th>
                     <td style="width: 25%;">
                         <select id="internetProd" onchange="calculateBiz()">
@@ -1119,20 +1094,18 @@
                 </tr>
             </table>
 
-            <!-- 산출 요약 배너 -->
             <div class="summary-banner">
                 <div>
-                    <div style="font-size: 11px; font-weight: bold; color: #1e293b;" id="summaryTitle">■ 요금제 (3년약정) 총 월정액 (VAT포함)</div>
-                    <div class="summary-sub" id="summaryNotice">KT CS 대구센터 B2B 표준 출고가 산출 기준</div>
+                    <div style="font-size: 11px; font-weight: bold; color: #1e293b;" id="summaryTitle">■ 30회선 이상 공동청약 적용 총 월정액 (VAT포함)</div>
+                    <div class="summary-sub" id="summaryNotice">KT CS 대구센터 B2B 30회선 이상 대량 공동청약 단가 기준</div>
                 </div>
                 <div style="text-align: right;">
-                    <div class="summary-val" id="totalMonthly">301,950 원 / 월</div>
-                    <div class="summary-sub" id="perRoomPrice">룸당 단가: 약 15,892원/월</div>
+                    <div class="summary-val" id="totalMonthly">0 원 / 월</div>
+                    <div class="summary-sub" id="perRoomPrice">룸당 단가: 약 0원/월</div>
                 </div>
             </div>
 
-            <!-- 세부 가입 품목 내역표 -->
-            <div class="card-title">■ 가입 품목별 상세 산출 내역표</div>
+            <div class="card-title">■ 가입 품목별 상세 산출 내역표 (30회선 이상 할인율 적용)</div>
             <table class="product-table">
                 <thead>
                     <tr>
@@ -1150,17 +1123,17 @@
                 <tfoot>
                     <tr class="total-row">
                         <td colspan="2">합 계</td>
-                        <td id="totalLines">19 회선</td>
+                        <td id="totalLines">30 회선</td>
                         <td>-</td>
                         <td>-</td>
-                        <td class="text-right text-red" id="sumMonthly">301,950 원</td>
+                        <td class="text-right text-red" id="sumMonthly">0 원</td>
                         <td>-</td>
-                        <td class="text-right font-bold" id="sumInstall">309,400 원</td>
+                        <td class="text-right font-bold" id="sumInstall">0 원</td>
                     </tr>
                 </tfoot>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="color: #d91414 !important; background-color: #fef2f2 !important; text-align: center !important;">필수 안내</th>
                     <td class="notice-text bg-alert" style="padding: 10px; font-weight: 700;">
@@ -1171,11 +1144,11 @@
                 </tr>
             </table>
 
-            <table class="notice-container-table" style="user-select: none;">
+            <table class="notice-container-table">
                 <tr>
                     <th style="text-align: center !important;">유의 사항</th>
                     <td class="notice-text" style="padding: 10px; background-color: #fafafa; color: #555 !important;">
-                        1. 상기 BIZ 대량 인터넷/TV 견적은 KT CS 대구센터 정식 B2B 표준 출고 단가가 반영된 산출 내역입니다.<br />
+                        1. 상기 BIZ 30회선 이상 대량 인터넷/TV 견적은 KT CS 대구센터 정식 B2B 공동청약 할인율이 반영된 산출 내역입니다.<br />
                         2. 인터넷 패밀리 회선 수는 동일 명의당 최대 2회선까지 결합 가능하며, 약정 세부조건은 이용약관에 준합니다.<br />
                         3. 현장 구내 설비 환경 및 장애 발생 시 KT 고객센터(국번없이 100번) 또는 담당부서로 상담 바랍니다.
                     </td>
@@ -1200,17 +1173,14 @@
     </div>
 
     <script>
-        // 🔑 [접속 비밀번호 설정]
         const SYSTEM_PASSWORD = "0729";
-
         let activeTab = 'renewal';
         let currentBizTab = '1';
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzriskJha8aL9cnErvdImPwMBxLi690oyLCUgrTBHJHcvHiWlNvGwU3ferdftgx-sml/exec";
 
-        // BIZ 대량 계산기 약정별 1:1 매칭 데이터
         const SHEET_STRICT_DATA = {
             "1": {
-                name: "요금제 (3년약정)",
+                name: "요금제 (3년약정 - 30회선 이상)",
                 tvOptions: ["OTV Biz 벌크 베이직", "OTV Biz 슬림", "OTV Biz 베이직", "OTV Biz 라이트", "OTV Biz 에센스", "OTV Biz 벌크 슬림", "OTV Biz 벌크 라이트", "OTV Biz 벌크 에센스"],
                 defaultTv: "OTV Biz 벌크 베이직",
                 internet: {
@@ -1219,20 +1189,20 @@
                     "인터넷 에센스 (1G)": { fee: 33000, family: 27500, install: 32000 }
                 },
                 tv: {
-                    "OTV Biz 벌크 베이직": { base: 8250, addNormal: 8250, install: 11000 },
-                    "OTV Biz 슬림": { base: 11000, addNormal: 6600, install: 11000 },
-                    "OTV Biz 베이직": { base: 12100, addNormal: 7370, install: 11000 },
-                    "OTV Biz 라이트": { base: 13200, addNormal: 7920, install: 11000 },
-                    "OTV Biz 에센스": { base: 16500, addNormal: 10120, install: 11000 },
-                    "OTV Biz 벌크 슬림": { base: 7700, addNormal: 7700, install: 11000 },
-                    "OTV Biz 벌크 라이트": { base: 8800, addNormal: 8800, install: 11000 },
-                    "OTV Biz 벌크 에센스": { base: 11000, addNormal: 11000, install: 11000 }
+                    "OTV Biz 벌크 베이직": { base: 7425, addNormal: 7425, install: 11000 },
+                    "OTV Biz 슬림": { base: 9900, addNormal: 5940, install: 11000 },
+                    "OTV Biz 베이직": { base: 10890, addNormal: 6633, install: 11000 },
+                    "OTV Biz 라이트": { base: 11880, addNormal: 7128, install: 11000 },
+                    "OTV Biz 에센스": { base: 14850, addNormal: 9108, install: 11000 },
+                    "OTV Biz 벌크 슬림": { base: 6930, addNormal: 6930, install: 11000 },
+                    "OTV Biz 벌크 라이트": { base: 7920, addNormal: 7920, install: 11000 },
+                    "OTV Biz 벌크 에센스": { base: 9900, addNormal: 9900, install: 11000 }
                 },
                 stb: { "올인원 STB": 3300, "STB A": 4400 },
                 tvInstallBase: 4400
             },
             "2": {
-                name: "BIZ벌크 요금제 (4년약정)",
+                name: "BIZ벌크 요금제 (4년약정 - 30회선 이상)",
                 tvOptions: ["OTV Biz 벌크 슬림", "OTV Biz 벌크 베이직", "OTV Biz 벌크 라이트", "OTV Biz 벌크 에센스"],
                 defaultTv: "OTV Biz 벌크 슬림",
                 internet: {
@@ -1241,16 +1211,16 @@
                     "인터넷 에센스 (1G)": { fee: 33000, family: 27500, install: 23100 }
                 },
                 tv: {
-                    "OTV Biz 벌크 슬림": { base: 6875, addNormal: 6875, install: 11000 },
-                    "OTV Biz 벌크 베이직": { base: 7425, addNormal: 7425, install: 11000 },
-                    "OTV Biz 벌크 라이트": { base: 7975, addNormal: 7975, install: 11000 },
-                    "OTV Biz 벌크 에센스": { base: 10175, addNormal: 10175, install: 11000 }
+                    "OTV Biz 벌크 슬림": { base: 6188, addNormal: 6188, install: 11000 },
+                    "OTV Biz 벌크 베이직": { base: 6683, addNormal: 6683, install: 11000 },
+                    "OTV Biz 벌크 라이트": { base: 7178, addNormal: 7178, install: 11000 },
+                    "OTV Biz 벌크 에센스": { base: 9158, addNormal: 9158, install: 11000 }
                 },
                 stb: { "올인원 STB": 3300, "STB A": 4400 },
                 tvInstallBase: 4400
             },
             "3": {
-                name: "BIZ벌크 요금제 (5년약정)",
+                name: "BIZ벌크 요금제 (5년약정 - 30회선 이상)",
                 tvOptions: ["OTV Biz 벌크 슬림", "OTV Biz 벌크 베이직", "OTV Biz 벌크 라이트", "OTV Biz 벌크 에센스"],
                 defaultTv: "OTV Biz 벌크 라이트",
                 internet: {
@@ -1259,10 +1229,10 @@
                     "인터넷 에센스 (1G)": { fee: 33000, family: 27500, install: 23100 }
                 },
                 tv: {
-                    "OTV Biz 벌크 슬림": { base: 6050, addNormal: 6050, install: 11000 },
-                    "OTV Biz 벌크 베이직": { base: 6600, addNormal: 6600, install: 11000 },
-                    "OTV Biz 벌크 라이트": { base: 7150, addNormal: 7150, install: 11000 },
-                    "OTV Biz 벌크 에센스": { base: 9350, addNormal: 9350, install: 11000 }
+                    "OTV Biz 벌크 슬림": { base: 5445, addNormal: 5445, install: 11000 },
+                    "OTV Biz 벌크 베이직": { base: 5940, addNormal: 5940, install: 11000 },
+                    "OTV Biz 벌크 라이트": { base: 6435, addNormal: 6435, install: 11000 },
+                    "OTV Biz 벌크 에센스": { base: 8415, addNormal: 8415, install: 11000 }
                 },
                 stb: { "올인원 STB": 3300, "STB A": 4400 },
                 tvInstallBase: 4400
@@ -1279,14 +1249,19 @@
             recalcAllHaiorder();
             initKeyLock();
             switchBizSubTab('1');
+            initAuthEvents();
+        }
 
-            // 비밀번호 입력창 엔터키 이벤트 바인딩
+        function initAuthEvents() {
             const authInput = document.getElementById('authPasswordInput');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const toggleBtn = document.getElementById('toggleReqFormBtn');
+            const reqSubmitBtn = document.getElementById('reqSubmitBtn');
+
             if (authInput) {
                 authInput.value = '';
                 setTimeout(() => authInput.focus(), 100);
                 authInput.addEventListener('keydown', function(e) {
-                    e.stopPropagation();
                     if (e.key === 'Enter' || e.keyCode === 13) {
                         e.preventDefault();
                         validatePassword();
@@ -1294,11 +1269,30 @@
                 });
             }
 
-            // 신청자 연락처 입력창 엔터키 바인딩
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    validatePassword();
+                });
+            }
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleRequestForm();
+                });
+            }
+
+            if (reqSubmitBtn) {
+                reqSubmitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    submitPasswordRequest();
+                });
+            }
+
             const phoneInput = document.getElementById('reqUserPhone');
             if (phoneInput) {
                 phoneInput.addEventListener('keydown', function(e) {
-                    e.stopPropagation();
                     if (e.key === 'Enter' || e.keyCode === 13) {
                         e.preventDefault();
                         submitPasswordRequest();
@@ -1307,12 +1301,10 @@
             }
         }
 
-        // 🔐 비밀번호 검증 함수
         function validatePassword() {
             const input = document.getElementById('authPasswordInput');
             const errMsg = document.getElementById('authErrorMsg');
             const card = document.getElementById('authCard');
-
             const enteredVal = String(input.value).trim();
 
             if (enteredVal === SYSTEM_PASSWORD) {
@@ -1327,7 +1319,6 @@
             }
         }
 
-        // 🔑 비밀번호 신청 영역 펼침/닫힘 토글
         function toggleRequestForm() {
             const area = document.getElementById('reqFormArea');
             if (area.style.display === 'block') {
@@ -1338,25 +1329,15 @@
             }
         }
 
-        // 📩 비밀번호 신청 데이터 GAS 전송
         function submitPasswordRequest() {
             const nameInput = document.getElementById('reqUserName');
             const phoneInput = document.getElementById('reqUserPhone');
             const btn = document.getElementById('reqSubmitBtn');
-
             const name = nameInput.value.trim();
             const phone = phoneInput.value.trim();
 
-            if (!name) {
-                alert('신청자 성함을 입력해 주세요.');
-                nameInput.focus();
-                return;
-            }
-            if (!phone) {
-                alert('연락처를 입력해 주세요.');
-                phoneInput.focus();
-                return;
-            }
+            if (!name) { alert('신청자 성함을 입력해 주세요.'); nameInput.focus(); return; }
+            if (!phone) { alert('연락처를 입력해 주세요.'); phoneInput.focus(); return; }
 
             btn.disabled = true;
             btn.innerText = '전송 중...';
@@ -1370,21 +1351,17 @@
             };
 
             fetch(GAS_URL, {
-                method: 'POST',
-                mode: 'no-cors',
+                method: 'POST', mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             }).then(() => {
-                alert(`[신청 완료]\n${name}님의 암호 발급 신청이 담당자에게 전달되었습니다.\n확인 후 안내 문자를 발송해 드립니다.`);
-                nameInput.value = '';
-                phoneInput.value = '';
+                alert(`[신청 완료]\n${name}님의 암호 발급 신청이 담당자에게 전달되었습니다.`);
+                nameInput.value = ''; phoneInput.value = '';
                 document.getElementById('reqFormArea').style.display = 'none';
-                btn.disabled = false;
-                btn.innerText = '신청 문자/알림 전송';
+                btn.disabled = false; btn.innerText = '신청 문자/알림 전송';
             }).catch(err => {
-                alert('신청 전송 중 오류가 발생했습니다. 다시 시도해 주세요.');
-                btn.disabled = false;
-                btn.innerText = '신청 문자/알림 전송';
+                alert('신청 전송 중 오류가 발생했습니다.');
+                btn.disabled = false; btn.innerText = '신청 문자/알림 전송';
             });
         }
 
@@ -1401,10 +1378,7 @@
 
             document.addEventListener('keydown', function(e) {
                 if (e.target && (e.target.id === 'authPasswordInput' || e.target.id === 'reqUserName' || e.target.id === 'reqUserPhone')) return;
-
-                if (e.keyCode === 123 || 
-                   (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
-                   (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 65))) {
+                if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 65))) {
                     e.preventDefault(); e.stopPropagation(); showRedAlert(); return false;
                 }
             });
@@ -1416,8 +1390,6 @@
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
             document.querySelectorAll('.invoice-date').forEach(el => { el.value = `${yyyy}-${mm}-${dd}`; });
-            const qDate = document.getElementById('quoteDate');
-            if(qDate) qDate.value = `${yyyy}-${mm}-${dd}`;
         }
 
         function switchEstimateTab(tabName) {
@@ -1460,9 +1432,10 @@
 
         function calculateBiz() {
             const data = SHEET_STRICT_DATA[currentBizTab];
-            const tvCount = parseInt(document.getElementById('tvCount').value) || 0;
+            let tvCount = parseInt(document.getElementById('tvCount').value) || 30;
+            if(tvCount < 30) tvCount = 30;
+
             const inetProdKey = document.getElementById('internetProd').value;
-            
             let inetKeyMatched = "인터넷 베이직 (500M)";
             if (inetProdKey.includes("슬림")) inetKeyMatched = "인터넷 슬림 (100M)";
             else if (inetProdKey.includes("에센스")) inetKeyMatched = "인터넷 에센스 (1G)";
@@ -1473,9 +1446,7 @@
 
             const inetCountCalc = Math.ceil(tvCount / 8);
             let famLines = (inetCountCalc > famInput) ? (famInput > 2 ? 2 : famInput) : 0;
-
-            const mainInetLines = (inetCountCalc - 1) > famLines ? (inetCountCalc - famLines) : (inetCountCalc - famLines);
-            const mainInetLinesFinal = mainInetLines < 1 ? 1 : mainInetLines;
+            const mainInetLinesFinal = 1;
 
             const inetInfo = data.internet[inetKeyMatched];
             const tvInfo = data.tv[tvProd] || { base: 0, addNormal: 0, install: 11000 };
@@ -1499,7 +1470,7 @@
             if (remAdd > 0) addGroups.push({ groupIndex: 8, count: remAdd });
 
             const mainInetMonthly = inetInfo.fee * mainInetLinesFinal;
-            const mainInetInstallTotal = inetInfo.install + (mainInetLinesFinal - 1) * inetInfo.install;
+            const mainInetInstallTotal = inetInfo.install;
             const famInetMonthly = inetInfo.family * famLines;
 
             const baseTvMonthly = (tvInfo.base + stbFee) * baseTvLines;
@@ -1507,10 +1478,8 @@
 
             let addTvMonthlyTotal = 0;
             let addTvInstallTotalSum = 0;
-
             let tbodyHTML = "";
 
-            // 1. 인터넷 메인
             tbodyHTML += `
                 <tr>
                     <td class="font-bold">인터넷</td>
@@ -1523,7 +1492,6 @@
                     <td class="text-right">${mainInetInstallTotal.toLocaleString()}원</td>
                 </tr>`;
 
-            // 2. 패밀리
             if (famLines > 0) {
                 tbodyHTML += `
                     <tr>
@@ -1538,11 +1506,10 @@
                     </tr>`;
             }
 
-            // 3. TV 기본 설치비
             tbodyHTML += `
                 <tr>
                     <td class="font-bold">TV 기본</td>
-                    <td class="text-left">기본설치비 (동시오더/복수)</td>
+                    <td class="text-left">기본설치비 (30회선 이상 공동청약)</td>
                     <td>-</td>
                     <td class="text-right">-</td>
                     <td>-</td>
@@ -1551,7 +1518,6 @@
                     <td class="text-right">${data.tvInstallBase.toLocaleString()}원</td>
                 </tr>`;
 
-            // 4. TV 주회선
             tbodyHTML += `
                 <tr>
                     <td class="font-bold">TV 기본</td>
@@ -1564,7 +1530,6 @@
                     <td class="text-right">${baseTvInstallTotal.toLocaleString()}원</td>
                 </tr>`;
 
-            // 5. TV 추가회선
             if (addGroups.length > 0) {
                 addGroups.forEach((g) => {
                     let mVal = (tvAddPrice + stbFee) * g.count;
@@ -1608,22 +1573,16 @@
             const selectedOption = selectEl.options[selectEl.selectedIndex];
             const phoneInput = document.getElementById(`manager-phone-${scope}`);
             const emailInput = document.getElementById(`manager-email-${scope}`);
-
             if(!phoneInput) return;
 
             if (selectedOption.value === 'custom') {
-                phoneInput.value = '';
-                if(emailInput) emailInput.value = '';
-                phoneInput.removeAttribute('readonly');
-                if(emailInput) emailInput.removeAttribute('readonly');
-                phoneInput.placeholder = '연락처 직접 입력';
-                if(emailInput) emailInput.placeholder = '이메일 직접 입력';
-                phoneInput.focus();
+                phoneInput.value = ''; if(emailInput) emailInput.value = '';
+                phoneInput.removeAttribute('readonly'); if(emailInput) emailInput.removeAttribute('readonly');
+                phoneInput.placeholder = '연락처 직접 입력'; phoneInput.focus();
             } else {
                 phoneInput.value = selectedOption.getAttribute('data-phone') || '';
                 if(emailInput) emailInput.value = selectedOption.getAttribute('data-email') || 'tsmobile1@naver.com';
-                phoneInput.setAttribute('readonly', true);
-                if(emailInput) emailInput.setAttribute('readonly', true);
+                phoneInput.setAttribute('readonly', true); if(emailInput) emailInput.setAttribute('readonly', true);
             }
         }
 
@@ -1633,13 +1592,7 @@
 
         function sendQuoteDataGas() {
             const userPhone = "01082909971";
-
-            let payload = {
-                quoteType: activeTab,
-                userPhone: userPhone,
-                consultDay: '견적서 즉시발행'
-            };
-
+            let payload = { quoteType: activeTab, userPhone: userPhone, consultDay: '견적서 즉시발행' };
             fetch(GAS_URL, {
                 method: 'POST', mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
@@ -1658,16 +1611,14 @@
         function resetActiveTabForm() {
             if(!confirm('현재 견적서 내용을 초기화하시겠습니까?')) return;
             const targetContainer = document.getElementById(`capture-area-${activeTab}`);
-            
             if(activeTab === 'bizcalc') {
-                document.getElementById('tvCount').value = 0;
+                document.getElementById('tvCount').value = 30;
                 document.getElementById('familyLines').value = 0;
                 document.getElementById('feeVal').value = 0;
                 document.getElementById('giftVal').value = 0;
                 document.getElementById('biz-client-company').value = "귀하";
                 document.getElementById('biz-client-bizno').value = "";
-                updateBenefit();
-                calculateBiz();
+                updateBenefit(); calculateBiz();
             } else if(activeTab === 'haiorder') {
                 targetContainer.querySelectorAll('.device-qty, .reader-qty').forEach(inp => { inp.value = '0'; });
                 recalcAllHaiorder();
@@ -1818,24 +1769,7 @@
             if(!table) return;
             const installPriceInput = document.getElementById('installPriceInput');
             if(installPriceInput) installPriceInput.value = formatWithComma(250000 + (10000 * totalDeviceQty));
-
             document.querySelectorAll('.auto-device-qty').forEach(inp=> { inp.value = formatWithComma(totalDeviceQty); });
-            
-            let sumSupply=0, sumTax=0, sumTotal=0;
-            table.querySelectorAll('tr.item-row4').forEach(row=>{
-                const qty = parseNum(row.querySelector('.qty4').value);
-                const price = parseNum(row.querySelector('.price4').value);
-                let supply = row.classList.contains('install-fee-row') ? price : qty * price;
-                const tax = Math.round(supply*0.1), total = supply+tax;
-                
-                row.querySelector('.supply4').textContent = supply.toLocaleString('ko-KR');
-                row.querySelector('.tax4').textContent = tax.toLocaleString('ko-KR');
-                row.querySelector('.total4').textContent = total.toLocaleString('ko-KR');
-                sumSupply+=supply; sumTax+=tax; sumTotal+=total;
-            });
-            table.querySelector('.g-supply4').textContent = sumSupply.toLocaleString('ko-KR');
-            table.querySelector('.g-tax4').textContent = sumTax.toLocaleString('ko-KR');
-            table.querySelector('.g-total4').textContent = sumTotal.toLocaleString('ko-KR');
         }
 
         function calcOfferTotalHai(menuTabletQty) {
@@ -1863,7 +1797,6 @@
             el.setSelectionRange(cursorPosition + (newLength - originalLength), cursorPosition + (newLength - originalLength));
         }
 
-        /* 📸 [최종 보정 Engine] Table 구조 완전 보존 렌더링 */
         function generateActiveInvoiceImage(format) {
             const originArea = document.getElementById(`capture-area-${activeTab}`);
             if (document.activeElement) document.activeElement.blur();
@@ -1904,7 +1837,7 @@
                     textNode.style.color = '#004b8d'; 
                     textNode.style.fontWeight = 'bold';
                 }
-                if (originInput.id === 'tvCount' || originInput.id === 'familyLines' || originInput.id === 'feeVal' || originInput.id === 'giftVal') {
+                if (['tvCount', 'familyLines', 'feeVal', 'giftVal'].includes(originInput.id)) {
                     textNode.style.fontWeight = '800';
                     textNode.style.color = '#1e293b';
                 }
@@ -1936,7 +1869,7 @@
                     if (activeTab === 'renewal') fileName = '법인회선_재약정_견적서';
                     else if (activeTab === 'total') fileName = '유무선_통합_견적서';
                     else if (activeTab === 'haiorder') fileName = '하이오더_견적서';
-                    else if (activeTab === 'bizcalc') fileName = 'KT_BIZ_인터넷_TV_표준견적서';
+                    else if (activeTab === 'bizcalc') fileName = 'KT_BIZ_30회선이상_표준견적서';
 
                     if (format === 'jpg') {
                         const link = document.createElement('a');
