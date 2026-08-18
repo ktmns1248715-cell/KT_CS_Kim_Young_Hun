@@ -357,7 +357,7 @@
             <button class="tab-btn active" id="btn-renewal" onclick="switchEstimateTab('renewal')">법인회선 재약정</button>
             <button class="tab-btn" id="btn-total" onclick="switchEstimateTab('total')">유무선 통합</button>
             <button class="tab-btn" id="btn-haiorder" onclick="switchEstimateTab('haiorder')">하이오더</button>
-            <button class="tab-btn" id="btn-bizcalc" onclick="switchEstimateTab('bizcalc')" style="background-color:#e60012; color:#fff;">🏢 BIZ 대량 계산기 (30회선 이상)</button>
+            <button class="tab-btn" id="btn-bizcalc" onclick="switchEstimateTab('bizcalc')" style="background-color:#e60012; color:#fff;">🏢 BIZ 대량 계산기</button>
         </div>
 
         <!-- ================= [서식 1: 법인회선 재약정 견적서] ================= -->
@@ -961,7 +961,7 @@
             </table>
         </div>
 
-        <!-- ================= [서식 4: BIZ 대량 계산기 (30회선 이상 기준 적용)] ================= -->
+        <!-- ================= [서식 4: BIZ 대량 계산기] ================= -->
         <div class="invoice-container" id="capture-area-bizcalc" style="display: none;">
             <div class="watermark-overlay">KT CS 대구센터 김영훈 무단 복사 및 사용을 금지합니다</div>
 
@@ -979,7 +979,7 @@
 
             <div class="invoice-header">
                 <div class="logo-area">kt</div>
-                <div class="title-area">KT 인터넷 & TV BIZ 30회선 이상 표준 견적서</div>
+                <div class="title-area">KT 인터넷 & TV BIZ 표준 견적서</div>
             </div>
 
             <div class="biz-sub-tab-container">
@@ -1063,11 +1063,11 @@
                 </tr>
             </table>
 
-            <div class="card-title">■ BIZ 30회선 이상 대량 수량 및 가입 조건 선택</div>
+            <div class="card-title">■ BIZ 대량 수량 및 가입 조건 선택</div>
             <table class="biz-input-table">
                 <tr>
-                    <th style="width: 25%;">1. TV 제공수 (30회선 이상):</th>
-                    <td style="width: 25%;"><input type="number" id="tvCount" value="30" min="30" max="500" oninput="calculateBiz()"></td>
+                    <th style="width: 25%;">1. TV 제공수:</th>
+                    <td style="width: 25%;"><input type="number" id="tvCount" value="30" min="1" max="500" oninput="calculateBiz()"></td>
                     <th style="width: 25%;">2. 인터넷 상품 선택:</th>
                     <td style="width: 25%;">
                         <select id="internetProd" onchange="calculateBiz()">
@@ -1096,8 +1096,8 @@
 
             <div class="summary-banner">
                 <div>
-                    <div style="font-size: 11px; font-weight: bold; color: #1e293b;" id="summaryTitle">■ 30회선 이상 공동청약 적용 총 월정액 (VAT포함)</div>
-                    <div class="summary-sub" id="summaryNotice">KT CS 대구센터 B2B 30회선 이상 대량 공동청약 단가 기준</div>
+                    <div style="font-size: 11px; font-weight: bold; color: #1e293b;" id="summaryTitle">■ 공동청약 적용 총 월정액 (VAT포함)</div>
+                    <div class="summary-sub" id="summaryNotice">KT CS 대구센터 B2B 대량 공동청약 단가 기준</div>
                 </div>
                 <div style="text-align: right;">
                     <div class="summary-val" id="totalMonthly">0 원 / 월</div>
@@ -1105,7 +1105,7 @@
                 </div>
             </div>
 
-            <div class="card-title">■ 가입 품목별 상세 산출 내역표 (30회선 이상 할인율 적용)</div>
+            <div class="card-title">■ 가입 품목별 상세 산출 내역표 (할인율 적용)</div>
             <table class="product-table">
                 <thead>
                     <tr>
@@ -1148,7 +1148,7 @@
                 <tr>
                     <th style="text-align: center !important;">유의 사항</th>
                     <td class="notice-text" style="padding: 10px; background-color: #fafafa; color: #555 !important;">
-                        1. 상기 BIZ 30회선 이상 대량 인터넷/TV 견적은 KT CS 대구센터 정식 B2B 공동청약 할인율이 반영된 산출 내역입니다.<br />
+                        1. 상기 BIZ 대량 인터넷/TV 견적은 KT CS 대구센터 정식 B2B 공동청약 할인율이 반영된 산출 내역입니다.<br />
                         2. 인터넷 패밀리 회선 수는 동일 명의당 최대 2회선까지 결합 가능하며, 약정 세부조건은 이용약관에 준합니다.<br />
                         3. 현장 구내 설비 환경 및 장애 발생 시 KT 고객센터(국번없이 100번) 또는 담당부서로 상담 바랍니다.
                     </td>
@@ -1180,7 +1180,7 @@
 
         const SHEET_STRICT_DATA = {
             "1": {
-                name: "요금제 (3년약정 - 30회선 이상)",
+                name: "요금제 (3년약정)",
                 tvOptions: ["OTV Biz 벌크 베이직", "OTV Biz 슬림", "OTV Biz 베이직", "OTV Biz 라이트", "OTV Biz 에센스", "OTV Biz 벌크 슬림", "OTV Biz 벌크 라이트", "OTV Biz 벌크 에센스"],
                 defaultTv: "OTV Biz 벌크 베이직",
                 internet: {
@@ -1202,7 +1202,7 @@
                 tvInstallBase: 4400
             },
             "2": {
-                name: "BIZ벌크 요금제 (4년약정 - 30회선 이상)",
+                name: "BIZ벌크 요금제 (4년약정)",
                 tvOptions: ["OTV Biz 벌크 슬림", "OTV Biz 벌크 베이직", "OTV Biz 벌크 라이트", "OTV Biz 벌크 에센스"],
                 defaultTv: "OTV Biz 벌크 슬림",
                 internet: {
@@ -1220,7 +1220,7 @@
                 tvInstallBase: 4400
             },
             "3": {
-                name: "BIZ벌크 요금제 (5년약정 - 30회선 이상)",
+                name: "BIZ벌크 요금제 (5년약정)",
                 tvOptions: ["OTV Biz 벌크 슬림", "OTV Biz 벌크 베이직", "OTV Biz 벌크 라이트", "OTV Biz 벌크 에센스"],
                 defaultTv: "OTV Biz 벌크 라이트",
                 internet: {
@@ -1432,8 +1432,8 @@
 
         function calculateBiz() {
             const data = SHEET_STRICT_DATA[currentBizTab];
-            let tvCount = parseInt(document.getElementById('tvCount').value) || 30;
-            if(tvCount < 30) tvCount = 30;
+            let tvCount = parseInt(document.getElementById('tvCount').value) || 1;
+            if(tvCount < 1) tvCount = 1;
 
             const inetProdKey = document.getElementById('internetProd').value;
             let inetKeyMatched = "인터넷 베이직 (500M)";
@@ -1509,7 +1509,7 @@
             tbodyHTML += `
                 <tr>
                     <td class="font-bold">TV 기본</td>
-                    <td class="text-left">기본설치비 (30회선 이상 공동청약)</td>
+                    <td class="text-left">기본설치비 (공동청약)</td>
                     <td>-</td>
                     <td class="text-right">-</td>
                     <td>-</td>
@@ -1869,7 +1869,7 @@
                     if (activeTab === 'renewal') fileName = '법인회선_재약정_견적서';
                     else if (activeTab === 'total') fileName = '유무선_통합_견적서';
                     else if (activeTab === 'haiorder') fileName = '하이오더_견적서';
-                    else if (activeTab === 'bizcalc') fileName = 'KT_BIZ_30회선이상_표준견적서';
+                    else if (activeTab === 'bizcalc') fileName = 'KT_BIZ_표준견적서';
 
                     if (format === 'jpg') {
                         const link = document.createElement('a');
