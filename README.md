@@ -319,7 +319,7 @@
             
             <input type="password" id="authPasswordInput" class="auth-input" placeholder="••••" maxlength="20" autocomplete="current-password" />
             <button type="button" class="auth-btn" id="authSubmitBtn">확인 (접속하기)</button>
-            <div id="authErrorMsg" class="auth-error">⚠️ 비밀번호가 일치하지 않습니다. (정답: 0729)</div>
+            <div id="authErrorMsg" class="auth-error">⚠️ 비밀번호가 일치하지 않습니다. (정답: 0309)</div>
             
             <div class="auth-req-link" id="toggleReqFormBtn">비밀번호가 없으신가요? (암호 신청하기)</div>
 
