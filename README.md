@@ -1173,7 +1173,7 @@
     </div>
 
     <script>
-        const SYSTEM_PASSWORD = "0729";
+        const SYSTEM_PASSWORD = "0309";
         let activeTab = 'renewal';
         let currentBizTab = '1';
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzriskJha8aL9cnErvdImPwMBxLi690oyLCUgrTBHJHcvHiWlNvGwU3ferdftgx-sml/exec";
